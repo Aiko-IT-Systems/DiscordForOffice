@@ -1,131 +1,126 @@
 ﻿using DiscordRPC;
+
 using Microsoft.Office.Interop.Word;
+
 using System;
 
 namespace DiscordForWord
 {
-    public partial class ThisAddIn
-    {
-        public DiscordRpcClient client;
-        private static RichPresence presence = Shared.Shared.getNewPresence("word");
+	public partial class ThisAddIn
+	{
+		public DiscordRpcClient Client;
+		private static readonly RichPresence Presence = Shared.Shared.GetNewPresence("word");
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
-        {
-            client = new DiscordRpcClient(Shared.Shared.getString("discordID"));
-            client.Initialize();
-            client.SetPresence(presence);
+		private void ThisAddIn_Startup(object sender, EventArgs e)
+		{
+			this.Client = new DiscordRpcClient(Shared.Shared.GetString("discordID"));
+			this.Client.Initialize();
+			this.Client.SetPresence(Presence);
 
-            this.Application.WindowDeactivate += new ApplicationEvents4_WindowDeactivateEventHandler(
-                Application_WindowDeactivate);
-            this.Application.WindowActivate += new ApplicationEvents4_WindowActivateEventHandler(
-                Application_WindowActivate);
-            this.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(
-                Application_DocumentOpen);
-            ((ApplicationEvents4_Event)this.Application).NewDocument += new ApplicationEvents4_NewDocumentEventHandler(
-                Application_DocumentOpen);
-            this.Application.WindowSelectionChange += new ApplicationEvents4_WindowSelectionChangeEventHandler(
-                Application_WindowSelectionChange);
-            this.Application.DocumentChange += new ApplicationEvents4_DocumentChangeEventHandler(
-                Application_DocumentChange);
+			this.Application.WindowDeactivate += this.Application_WindowDeactivate;
+			this.Application.WindowActivate += this.Application_WindowActivate;
+			this.Application.DocumentOpen += this.Application_DocumentOpen;
+			((ApplicationEvents4_Event)this.Application).NewDocument += this.Application_DocumentOpen;
+			this.Application.WindowSelectionChange += this.Application_WindowSelectionChange;
+			this.Application.DocumentChange += this.Application_DocumentChange;
 
-            try
-            {
-                // Use the currently opened document
-                Document doc = this.Application.ActiveDocument;
-                Application_DocumentOpen(doc);
-            }
-            catch
-            {
-                // Use the default presence when there is no current document
+			try
+			{
+				// Use the currently opened document
+				var doc = this.Application.ActiveDocument;
+				this.Application_DocumentOpen(doc);
+			}
+			catch
+			{
+				// Use the default presence when there is no current document
+			}
+		}
 
-            }
-        }
+		private void Application_DocumentChange()
+		{
+			if (this.Application.Documents.Count == 1)
+			{
+				this.Application_WindowSelectionChange(this.Application.Selection);
+			}
+		}
 
-        private void Application_DocumentChange()
-        {
-            if (Application.Documents.Count == 1)
-            {
-                Application_WindowSelectionChange(Application.Selection);
-            }
-        }
+		private void Application_WindowDeactivate(Document doc, Window wn)
+		{
+			if (this.Application.Documents.Count == 1)
+			{
+				Presence.Details = Shared.Shared.GetString("tabOut");
+				Presence.State = null;
+				Presence.Party = null;
+				Presence.Assets.LargeImageKey = "word_nothing";
+			}
 
-        private void Application_WindowDeactivate(Document doc, Window wn)
-        {
-            if (Application.Documents.Count == 1)
-            {
-                presence.Details = Shared.Shared.getString("tabOut");
-                presence.State = null;
-                presence.Party = null;
-                presence.Assets.LargeImageKey = "word_nothing";
-            }
+			this.Client.SetPresence(Presence);
+		}
 
-            client.SetPresence(presence);
-        }
+		private void Application_WindowClose()
+		{
+			if (this.Application.Documents.Count > 1)
+			{
+				Presence.Details = "" + this.Application.Documents.Count;
+				this.Application_WindowSelectionChange(this.Application.Selection);
+			}
+			else
+			{
+				Presence.Details = Shared.Shared.GetString("tabOut") + this.Application.Documents.Count;
+				Presence.State = null;
+				Presence.Party = null;
+				Presence.Assets.LargeImageKey = "word_nothing";
+			}
 
-        private void Application_WindowClose()
-        {
-            if (Application.Documents.Count > 1)
-            {
-                presence.Details = "" + Application.Documents.Count;
-                Application_WindowSelectionChange(Application.Selection);
-            }
-            else
-            {
-                presence.Details = Shared.Shared.getString("tabOut") + Application.Documents.Count;
-                presence.State = null;
-                presence.Party = null;
-                presence.Assets.LargeImageKey = "word_nothing";
-            }
+			this.Client.SetPresence(Presence);
+		}
 
-            client.SetPresence(presence);
-        }
+		private void Application_DocumentOpen(Document doc)
+		{
+			this.Application_WindowSelectionChange(this.Application.Selection);
 
-        private void Application_DocumentOpen(Document doc)
-        {
-            Application_WindowSelectionChange(Application.Selection);
+			((DocumentEvents2_Event)doc).Close += this.Application_WindowClose;
+		}
 
-            ((DocumentEvents2_Event)doc).Close += new DocumentEvents2_CloseEventHandler(Application_WindowClose);
-        }
+		private void Application_WindowActivate(Document doc, Window wn)
+		{
+			this.Application_WindowSelectionChange(this.Application.Selection);
+		}
 
-        private void Application_WindowActivate(Document doc, Window wn)
-        {
-            Application_WindowSelectionChange(Application.Selection);
-        }
+		public void Application_WindowSelectionChange(Selection sel)
+		{
+			var range = this.Application.ActiveDocument.Content;
 
-        public void Application_WindowSelectionChange(Selection sel)
-        {
-            Range range = Application.ActiveDocument.Content;
+			Presence.Details = this.Application.ActiveDocument.Name;
+			Presence.State = Shared.Shared.GetString("editingPage");
+			Presence.Assets.LargeImageKey = "word_editing";
+			Presence.Party = new Party()
+			{
+				ID = Secrets.CreateFriendlySecret(new Random()),
+				Max = range.ComputeStatistics(WdStatistic.wdStatisticPages),
+				Size = (int)sel.Information[WdInformation.wdActiveEndPageNumber]
+			};
 
-            presence.Details = Application.ActiveDocument.Name;
-            presence.State = Shared.Shared.getString("editingPage");
-            presence.Assets.LargeImageKey = "word_editing";
-            presence.Party = new Party()
-            {
-                ID = Secrets.CreateFriendlySecret(new Random()),
-                Max = range.ComputeStatistics(WdStatistic.wdStatisticPages),
-                Size = (int)sel.get_Information(WdInformation.wdActiveEndPageNumber)
-            };
+			this.Client.SetPresence(Presence);
+		}
 
-            client.SetPresence(presence);
-        }
+		private void ThisAddIn_Shutdown(object sender, EventArgs e)
+		{
+			this.Client.Dispose();
+		}
 
-        private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
-            client.Dispose();
-        }
+#region VSTO generated code
 
-        #region VSTO generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InternalStartup()
+		{
+			this.Startup += this.ThisAddIn_Startup;
+			this.Shutdown += this.ThisAddIn_Shutdown;
+		}
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InternalStartup()
-        {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
-        }
-
-        #endregion
-    }
+#endregion
+	}
 }

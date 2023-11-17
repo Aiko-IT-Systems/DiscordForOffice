@@ -1,50 +1,52 @@
 ﻿using DiscordRPC;
+
 using Microsoft.Office.Interop.Outlook;
+
 using System;
 
 namespace DiscordForOutlook
 {
-    public partial class ThisAddIn
-    {
-        public DiscordRpcClient client;
-        private static RichPresence presence = Shared.Shared.getNewPresence("outlook");
+	public partial class ThisAddIn
+	{
+		public DiscordRpcClient Client;
+		private static readonly RichPresence Presence = Shared.Shared.GetNewPresence("outlook");
 
-        private void ThisAddIn_Startup(object sender, EventArgs e)
-        {
-            client = new DiscordRpcClient(Shared.Shared.getString("discordID"));
-            client.Initialize();
-            presence.State = null;
-            presence.Details = null;
-            presence.Assets.LargeImageKey = "outlook_info";
-            client.SetPresence(presence);
+		private void ThisAddIn_Startup(object sender, EventArgs e)
+		{
+			this.Client = new DiscordRpcClient(Shared.Shared.GetString("discordID"));
+			this.Client.Initialize();
+			Presence.State = null;
+			Presence.Details = null;
+			Presence.Assets.LargeImageKey = "outlook_info";
+			this.Client.SetPresence(Presence);
 
-            ((ApplicationEvents_11_Event)Application).Quit += new ApplicationEvents_11_QuitEventHandler(ThisAddIn_Quit);
-        }
+			((ApplicationEvents_11_Event)this.Application).Quit += this.ThisAddIn_Quit;
+		}
 
-        private void ThisAddIn_Quit()
-        {
-            client.Dispose();
-            return;
-        }
+		private void ThisAddIn_Quit()
+		{
+			this.Client.Dispose();
+			return;
+		}
 
-        private void ThisAddIn_Shutdown(object sender, EventArgs e)
-        {
-            // Note: Outlook no longer raises this event. If you have code that 
-            //    must run when Outlook shuts down, see https://go.microsoft.com/fwlink/?LinkId=506785
-        }
+		private void ThisAddIn_Shutdown(object sender, EventArgs e)
+		{
+			// Note: Outlook no longer raises this event. If you have code that 
+			//    must run when Outlook shuts down, see https://go.microsoft.com/fwlink/?LinkId=506785
+		}
 
-        #region VSTO generated code
+#region VSTO generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InternalStartup()
-        {
-            this.Startup += new System.EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
-        }
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InternalStartup()
+		{
+			this.Startup += this.ThisAddIn_Startup;
+			this.Shutdown += this.ThisAddIn_Shutdown;
+		}
 
-        #endregion
-    }
+#endregion
+	}
 }

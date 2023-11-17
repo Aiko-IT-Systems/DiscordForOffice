@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?if $(var.Platform) = x64 ?>
-		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+	<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
 	<?else ?>
-		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+	<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 	<?endif ?>
-	
-	<Product Id="56C9BF0B-2257-4339-9995-949622054C9D" Name="DiscordForOffice (32 and 64-bit)" Language="1033" Version="1.2.0" Manufacturer="Leondro Lio" UpgradeCode="2F1EABD1-22C7-4C53-B5B1-15D40180DFFF">
+
+	<Product Id="56C9BF0B-2257-4339-9995-949622054C9D" Name="DiscordForOffice (32 and 64-bit)" Language="1033"
+	         Version="1.2.0" Manufacturer="Leondro Lio" UpgradeCode="2F1EABD1-22C7-4C53-B5B1-15D40180DFFF">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MediaTemplate EmbedCab="yes" />

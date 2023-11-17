@@ -9,26 +9,24 @@
 //------------------------------------------------------------------------------
 
 #pragma warning disable 414
-namespace DiscordForOutlook {
+namespace DiscordForVisio {
     
     
     /// 
     [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(0)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
-    public sealed partial class ThisAddIn : Microsoft.Office.Tools.Outlook.OutlookAddInBase {
-        
-        internal Microsoft.Office.Tools.CustomTaskPaneCollection CustomTaskPanes;
+    public sealed partial class ThisAddIn : Microsoft.Office.Tools.AddInBase {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "17.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "17.0.0.0")]
-        internal Microsoft.Office.Interop.Outlook.Application Application;
+        internal Microsoft.Office.Interop.Visio.Application Application;
         
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public ThisAddIn(global::Microsoft.Office.Tools.Outlook.Factory factory, global::System.IServiceProvider serviceProvider) : 
+        public ThisAddIn(global::Microsoft.Office.Tools.Factory factory, global::System.IServiceProvider serviceProvider) : 
                 base(factory, serviceProvider, "AddIn", "ThisAddIn") {
             Globals.Factory = factory;
         }
@@ -39,7 +37,7 @@ namespace DiscordForOutlook {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
-            this.Application = this.GetHostItem<Microsoft.Office.Interop.Outlook.Application>(typeof(Microsoft.Office.Interop.Outlook.Application), "Application");
+            this.Application = this.GetHostItem<Microsoft.Office.Interop.Visio.Application>(typeof(Microsoft.Office.Interop.Visio.Application), "Application");
             Globals.ThisAddIn = this;
             global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
@@ -121,7 +119,6 @@ namespace DiscordForOutlook {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
-            this.CustomTaskPanes.BeginInit();
         }
         
         /// 
@@ -129,7 +126,6 @@ namespace DiscordForOutlook {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "17.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
-            this.CustomTaskPanes.EndInit();
             this.EndInit();
         }
         
@@ -138,7 +134,6 @@ namespace DiscordForOutlook {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "17.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
-            this.CustomTaskPanes = Globals.Factory.CreateCustomTaskPaneCollection(null, null, "CustomTaskPanes", "CustomTaskPanes", this);
         }
         
         /// 
@@ -154,15 +149,6 @@ namespace DiscordForOutlook {
         private bool NeedsFill(string MemberName) {
             return this.DataHost.NeedsFill(this, MemberName);
         }
-        
-        /// 
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "17.0.0.0")]
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        protected override void OnShutdown() {
-            this.CustomTaskPanes.Dispose();
-            base.OnShutdown();
-        }
     }
     
     /// 
@@ -176,11 +162,9 @@ namespace DiscordForOutlook {
         
         private static ThisAddIn _ThisAddIn;
         
-        private static global::Microsoft.Office.Tools.Outlook.Factory _factory;
+        private static global::Microsoft.Office.Tools.Factory _factory;
         
         private static ThisRibbonCollection _ThisRibbonCollection;
-        
-        private static ThisFormRegionCollection _ThisFormRegionCollection;
         
         internal static ThisAddIn ThisAddIn {
             get {
@@ -196,7 +180,7 @@ namespace DiscordForOutlook {
             }
         }
         
-        internal static global::Microsoft.Office.Tools.Outlook.Factory Factory {
+        internal static global::Microsoft.Office.Tools.Factory Factory {
             get {
                 return _factory;
             }
@@ -218,15 +202,6 @@ namespace DiscordForOutlook {
                 return _ThisRibbonCollection;
             }
         }
-        
-        internal static ThisFormRegionCollection FormRegions {
-            get {
-                if ((_ThisFormRegionCollection == null)) {
-                    _ThisFormRegionCollection = new ThisFormRegionCollection(Globals.ThisAddIn.GetFormRegions());
-                }
-                return _ThisFormRegionCollection;
-            }
-        }
     }
     
     /// 
@@ -237,50 +212,6 @@ namespace DiscordForOutlook {
         /// 
         internal ThisRibbonCollection(global::Microsoft.Office.Tools.Ribbon.RibbonFactory factory) : 
                 base(factory) {
-        }
-        
-        internal ThisRibbonCollection this[Microsoft.Office.Interop.Outlook.Inspector inspector] {
-            get {
-                return this.GetRibbonContextCollection<ThisRibbonCollection>(inspector);
-            }
-        }
-        
-        internal ThisRibbonCollection this[Microsoft.Office.Interop.Outlook.Explorer explorer] {
-            get {
-                return this.GetRibbonContextCollection<ThisRibbonCollection>(explorer);
-            }
-        }
-    }
-    
-    /// 
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    internal sealed partial class ThisFormRegionCollection : Microsoft.Office.Tools.Outlook.FormRegionCollectionBase {
-        
-        /// 
-        public ThisFormRegionCollection(System.Collections.Generic.IList<Microsoft.Office.Tools.Outlook.IFormRegion> list) : 
-                base(list) {
-        }
-        
-        internal WindowFormRegionCollection this[Microsoft.Office.Interop.Outlook.Explorer explorer] {
-            get {
-                return ((WindowFormRegionCollection)(Globals.ThisAddIn.GetFormRegions(explorer, typeof(WindowFormRegionCollection))));
-            }
-        }
-        
-        internal WindowFormRegionCollection this[Microsoft.Office.Interop.Outlook.Inspector inspector] {
-            get {
-                return ((WindowFormRegionCollection)(Globals.ThisAddIn.GetFormRegions(inspector, typeof(WindowFormRegionCollection))));
-            }
-        }
-    }
-    
-    /// 
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    internal sealed partial class WindowFormRegionCollection : Microsoft.Office.Tools.Outlook.FormRegionCollectionBase {
-        
-        /// 
-        public WindowFormRegionCollection(System.Collections.Generic.IList<Microsoft.Office.Tools.Outlook.IFormRegion> list) : 
-                base(list) {
         }
     }
 }

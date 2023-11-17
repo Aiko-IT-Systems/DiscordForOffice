@@ -1,15 +1,17 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Discord for Microsoft Outlook")]
-[assembly: AssemblyDescription("The Microsoft Outlook to Discord Rich Presence Plugin")]
+[assembly: AssemblyTitle("DiscordForVisio")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Leondro Lio")]
-[assembly: AssemblyProduct("Discord For Outlook")]
-[assembly: AssemblyCopyright("Copyright Leondro Lio 2021")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("DiscordForVisio")]
+[assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bf8cb63f-5265-4c42-8d0b-b228f43a4a2e")]
+[assembly: Guid("95db897d-357c-473d-9bca-627004cb5387")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,3 +35,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
