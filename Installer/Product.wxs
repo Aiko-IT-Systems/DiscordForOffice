@@ -48,6 +48,10 @@
 				<File Source="$(var.DiscordForWord.TargetPath).manifest" />
 				<File Source="$(var.DiscordForWord.TargetDir)$(var.DiscordForWord.TargetName).vsto" />
 
+				<File Source="$(var.DiscordForVisio.TargetPath)" />
+				<File Source="$(var.DiscordForVisio.TargetPath).manifest" />
+				<File Source="$(var.DiscordForVisio.TargetDir)$(var.DiscordForVisio.TargetName).vsto" />
+
 				<File Source="$(var.DiscordForWord.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll" />
 				<File Source="$(var.Shared.TargetPath)" />
 				<File Source="$(var.Shared.TargetDir)DiscordRPC.dll" />

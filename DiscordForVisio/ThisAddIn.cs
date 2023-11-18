@@ -13,14 +13,14 @@ namespace DiscordForVisio
 
 		private void ThisAddIn_Startup(object sender, EventArgs e)
 		{
-			this.Client = new DiscordRpcClient(Shared.Shared.GetString("discordID"));
+			this.Client = new DiscordRpcClient(Shared.Shared.GetString("discordVisioID"));
 			this.Client.Initialize();
 			this.Client.SetPresence(Presence);
 
 			this.Application.WindowActivated += this.ApplicationOnWindowActivated;
 			this.Application.DocumentOpened += this.ApplicationOnDocumentOpened;
-			this.Application.SelectionChanged += this.ApplicationOnSelectionChanged;
 			this.Application.DocumentChanged += this.ApplicationOnDocumentChanged;
+			this.Application.BeforeWindowClosed += this.Application_WindowDeactivate;
 
 			try
 			{
@@ -34,29 +34,55 @@ namespace DiscordForVisio
 			}
 		}
 
+		private void SetPresence()
+		{
+			Presence.Details = this.Application.ActiveDocument.Name;
+			Presence.State = Shared.Shared.GetString("editingDiagram");
+			Presence.Assets.LargeImageKey = "visio_editing";
+
+			this.Client.SetPresence(Presence);
+		}
+
+		private void Application_WindowDeactivate(Window wn)
+		{
+			Presence.Details = Shared.Shared.GetString("tabOut");
+			Presence.State = null;
+			Presence.Assets.LargeImageKey = "visio_nothing";
+
+			this.Client.SetPresence(Presence);
+		}
+
+		private void Application_WindowClose(Document doc)
+		{
+			Presence.Details = Shared.Shared.GetString("tabOut") + this.Application.Documents.Count;
+			Presence.State = null;
+			Presence.Assets.LargeImageKey = "visio_nothing";
+
+			this.Client.SetPresence(Presence);
+		}
+
 		private void Application_DocumentOpen(Document doc)
 		{
-			throw new NotImplementedException();
+			this.SetPresence();
+			doc.BeforeDocumentClose += this.Application_WindowClose;
 		}
 
 		private void ApplicationOnDocumentChanged(Document doc)
 		{
-			throw new NotImplementedException();
-		}
-
-		private void ApplicationOnSelectionChanged(Window window)
-		{
-			throw new NotImplementedException();
+			if (this.Application.Documents.Count == 1)
+			{
+				this.SetPresence();
+			}
 		}
 
 		private void ApplicationOnDocumentOpened(Document doc)
 		{
-			throw new NotImplementedException();
+			this.SetPresence();
 		}
 
 		private void ApplicationOnWindowActivated(Window window)
 		{
-			throw new NotImplementedException();
+			this.SetPresence();
 		}
 
 		private void ThisAddIn_Shutdown(object sender, EventArgs e)

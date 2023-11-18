@@ -24,12 +24,14 @@ namespace Shared
 		private static readonly IDictionary<string, string> Strings = new Dictionary<string, string>()
 		{
 			{ "discordID", "470239659591598091" },
+			{ "discordVisioID", "1175416723432800326" },
 			{ "noFile", "No File Open" },
 			{ "tabOut", "Not Active" },
 			{ "welcome", "Welcome Screen" },
 			{ "editing", "Editing File" },
 			{ "editingSlide", "Editing Slide" },
 			{ "editingPage", "Editing Page" },
+			{ "editingDiagram", "Editing Diagram" },
 			{ "presenting", "Presenting" },
 			{ "excel", "Microsoft Excel" },
 			{ "powerpoint", "Microsoft PowerPoint" },
@@ -47,9 +49,7 @@ namespace Shared
 		}
 
 		public static string GetString(string key)
-		{
-			return Strings.TryGetValue(key, out var s) ? s : GetString("unknown_key");
-		}
+			=> Strings.TryGetValue(key, out var s) ? s : GetString("unknown_key");
 
 		public static RichPresence GetNewPresence(string type)
 			=> new RichPresence()

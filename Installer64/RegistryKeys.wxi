@@ -55,6 +55,19 @@
 		<RegistryValue Id="Word_RegKey_LoadBehavior" Root="HKLM"
 		               Key="Software\Microsoft\Office\Word\AddIns\$(var.DiscordForWord.TargetName)" Name="LoadBehavior"
 		               Value="3" Type="integer" />
+
+		<RegistryValue Id="Visio_RegKey_FriendlyName" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="FriendlyName"
+		               Value="DiscordForVisio" Type="string" />
+		<RegistryValue Id="Visio_RegKey_Description" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="Description"
+		               Value="Diagram everything for Discord with DiscordForOffice" Type="string" />
+		<RegistryValue Id="Visio_RegKey_Manifest" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="Manifest"
+		               Value="[INSTALLFOLDER]$(var.DiscordForVisio.TargetName).vsto|vstolocal" Type="string" />
+		<RegistryValue Id="Visio_RegKey_LoadBehavior" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="LoadBehavior"
+		               Value="3" Type="integer" />
 	</Component>
 
 	<?if $(var.Platform) = x64 ?>
@@ -111,6 +124,19 @@
 		               Value="[INSTALLFOLDER]$(var.DiscordForWord.TargetName).vsto|vstolocal" Type="string" />
 		<RegistryValue Id="AMD_Word_RegKey_LoadBehavior" Root="HKLM"
 		               Key="Software\Microsoft\Office\Word\AddIns\$(var.DiscordForWord.TargetName)" Name="LoadBehavior"
+		               Value="3" Type="integer" />
+
+		<RegistryValue Id="AMD_Visio_RegKey_FriendlyName" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="FriendlyName"
+		               Value="DiscordForVisio" Type="string" />
+		<RegistryValue Id="AMD_Visio_RegKey_Description" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="Description"
+		               Value="Diagram everything for Discord with DiscordForOffice" Type="string" />
+		<RegistryValue Id="AMD_Visio_RegKey_Manifest" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="Manifest"
+		               Value="[INSTALLFOLDER]$(var.DiscordForVisio.TargetName).vsto|vstolocal" Type="string" />
+		<RegistryValue Id="AMD_Visio_RegKey_LoadBehavior" Root="HKLM"
+		               Key="Software\Microsoft\Office\Visio\AddIns\$(var.DiscordForVisio.TargetName)" Name="LoadBehavior"
 		               Value="3" Type="integer" />
 	</Component>
 	<?endif ?>
