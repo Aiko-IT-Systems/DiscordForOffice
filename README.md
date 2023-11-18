@@ -17,6 +17,7 @@ Show the world how much you love presenting, spreadsheets and writing with the f
 - Word
 - PowerPoint
 - Excel
+- Visio
 - Outlook
     - This has no functionality yet.
     - Give ideas at ([#20](https://github.com/7coil/DiscordForOffice/issues/20))
